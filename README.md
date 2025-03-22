@@ -17,6 +17,23 @@ GoBookstore is a small project to experiment with **Go** by building a simple RE
 
 3. Access the API at `http://localhost:8080`.
 
+## **Testing**
+
+### Local Testing
+1. Make sure you have Go installed on your machine
+2. Run the tests:
+   ```bash
+   go test ./...
+   ```
+3. For verbose output:
+   ```bash
+   go test -v ./...
+   ```
+4. For test coverage:
+   ```bash
+   go test -cover ./...
+   ```
+
 ## **Features**
 - Add, view, and delete books.
 - Uses MongoDB as the database.
