@@ -34,6 +34,27 @@ GoBookstore is a small project to experiment with **Go** by building a simple RE
    go test -cover ./...
    ```
 
+## OpenAI Integration
+
+This project uses OpenAI's GPT model to generate random book suggestions. To use this feature:
+
+1. Get an API key from [OpenAI](https://platform.openai.com/api-keys)
+2. Set your API key as an environment variable:
+   ```bash
+   export OPENAI_API_KEY='your-api-key-here'
+   ```
+
+The LLM service will use this key to interact with OpenAI's API for generating book suggestions. If the API key is not set, the LLM-related features will be disabled.
+
+### Running LLM Tests
+
+To run the LLM-related tests:
+```bash
+go test -v ./services -run TestGenerateRandomBook
+```
+
+Note: The LLM tests will be skipped if `OPENAI_API_KEY` is not set.
+
 ## **Features**
 - Add, view, and delete books.
 - Uses MongoDB as the database.
