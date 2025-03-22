@@ -1,18 +1,20 @@
 package handlers
 
 import (
-    "context"
-    "encoding/json"
-    "net/http"
-    "time"
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
 
-    "github.com/gorilla/mux"
-    "go.mongodb.org/mongo-driver/bson"
-    "go.mongodb.org/mongo-driver/bson/primitive"
-    "gobookstore/data"
-    "gobookstore/models"
+	"gobookstore/data"
+	"gobookstore/models"
+	"gobookstore/services"
+
+	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
 
 // GetBooks handles GET /books
 func GetBooks(w http.ResponseWriter, r *http.Request) {
@@ -106,4 +108,30 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// CreateRandomBook handles POST /books/random
+func CreateRandomBook(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	fmt.Println("generating random book!")
+
+	book, err := services.GenerateRandomBook(ctx)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to generate book: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	book.ID = primitive.NewObjectID()
+
+	_, err = data.DB.Collection("books").InsertOne(ctx, book)
+	if err != nil {
+		http.Error(w, "Failed to create book", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(book)
 }

@@ -26,6 +26,7 @@ GoBookstore is a small project to experiment with **Go** by building a simple RE
 - `GET /books/{id}` - Retrieve a book by ID.
 - `POST /books` - Add a new book.
 - `DELETE /books/{id}` - Delete a book by ID.
+- `POST /books/random` - Create a random book.
 
 ## **License**
 Feel free to use or modify this project however you like.

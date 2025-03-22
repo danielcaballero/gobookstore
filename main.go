@@ -1,18 +1,18 @@
 package main
 
 import (
-    "context"
-    "log"
-    "net/http"
-    "os"
-    "os/signal"
-    "time"
+	"context"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
-    "github.com/gorilla/mux"
-    "gobookstore/data"
-    "gobookstore/handlers"
+	"gobookstore/data"
+	"gobookstore/handlers"
+
+	"github.com/gorilla/mux"
 )
-
 
 func main() {
 	// Initialize MongoDB connection
@@ -29,6 +29,7 @@ func main() {
 	r.HandleFunc("/books/{id}", handlers.GetBook).Methods("GET")
 	r.HandleFunc("/books", handlers.CreateBook).Methods("POST")
 	r.HandleFunc("/books/{id}", handlers.DeleteBook).Methods("DELETE")
+	r.HandleFunc("/books/random", handlers.CreateRandomBook).Methods("POST")
 
 	// Graceful shutdown setup
 	server := &http.Server{
